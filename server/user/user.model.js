@@ -3,6 +3,44 @@ const mongoose = require('mongoose');
 const httpStatus = require('http-status');
 const APIError = require('../helpers/APIError');
 
+const ShareSchema = new mongoose.Schema({
+  dateIn: {
+    type: 'Date'
+  },
+  dateOut: {
+    type: 'Mixed'
+  },
+  quantity: {
+    type: 'Number'
+  },
+  purchasePrice: {
+    type: 'Number'
+  },
+  sellingPrice: {
+    type: 'Mixed'
+  },
+  sellingCosts: {
+    type: 'Mixed'
+  }
+});
+
+const HoldingSchema = new mongoose.Schema({
+  shares: {
+    type: [
+      ShareSchema
+    ]
+  },
+  symbol: {
+    type: 'String'
+  },
+  displayName: {
+    type: 'String'
+  },
+  exchange: {
+    type: 'String'
+  }
+});
+
 /**
  * User Schema
  */
@@ -19,6 +57,22 @@ const UserSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
+  },
+  email: {
+    type: 'String'
+  },
+  password: {
+    type: 'String'
+  },
+  holdings: {
+    type: [
+      HoldingSchema
+    ]
+  },
+  stocksSold: {
+    type: [
+      HoldingSchema
+    ]
   }
 });
 

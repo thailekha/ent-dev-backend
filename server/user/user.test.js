@@ -27,8 +27,6 @@ describe('## User APIs', () => {
   let user = defaultUser;
 
   var updatedUser = {
-    username: 'KK123',
-    mobileNumber: '1234567890',
     "email":"test@test.test",
     "password":"$2a$10$yD0cSQAJCCXdrZdzIaKOaOh2Xs113BUDHqQ8VHQ0jhGipgFgT4YOW",
     "portfolio": {
@@ -84,7 +82,6 @@ describe('## User APIs', () => {
         .send(user)
         .expect(httpStatus.OK)
         .then(res => {
-          expect(res.body.username).to.equal(user.username);
           expect(res.body.mobileNumber).to.equal(user.mobileNumber);
           expect(res.body.email).to.equal('test@test.test');
           expect(res.body.password).to.equal('$2a$10$yD0cSQAJCCXdrZdzIaKOaOh2Xs113BUDHqQ8VHQ0jhGipgFgT4YOW');
@@ -126,7 +123,6 @@ describe('## User APIs', () => {
         .set('Authorization', `Bearer ${token}`)
         .expect(httpStatus.OK)
         .then(res => {
-          expect(res.body.username).to.equal(user.username);
           expect(res.body.mobileNumber).to.equal(user.mobileNumber);
           expect(res.body.email).to.equal('test@test.test');
           expect(res.body.password).to.equal('$2a$10$yD0cSQAJCCXdrZdzIaKOaOh2Xs113BUDHqQ8VHQ0jhGipgFgT4YOW');
@@ -179,8 +175,7 @@ describe('## User APIs', () => {
         .send(updatedUser)
         .expect(httpStatus.OK)
         .then(res => {
-          expect(res.body.username).to.equal(updatedUser.username);
-          expect(res.body.mobileNumber).to.equal(updatedUser.mobileNumber);
+          expect(res.body.mobileNumber).to.equal(user.mobileNumber);
           expect(res.body.email).to.equal('test@test.test');
           expect(res.body.password).to.equal('$2a$10$yD0cSQAJCCXdrZdzIaKOaOh2Xs113BUDHqQ8VHQ0jhGipgFgT4YOW');
           expect(res.body.portfolio.holdings.length).to.equal(1);
@@ -214,8 +209,7 @@ describe('## User APIs', () => {
         .send(updatedUser)
         .expect(httpStatus.OK)
         .then(res => {
-          expect(res.body.username).to.equal(updatedUser.username);
-          expect(res.body.mobileNumber).to.equal(updatedUser.mobileNumber);
+          expect(res.body.mobileNumber).to.equal(user.mobileNumber);
           expect(res.body.email).to.equal('test@test.test');
           expect(res.body.password).to.equal('$2a$10$yD0cSQAJCCXdrZdzIaKOaOh2Xs113BUDHqQ8VHQ0jhGipgFgT4YOW');
           expect(res.body.portfolio.holdings.length).to.equal(5);
@@ -281,8 +275,7 @@ describe('## User APIs', () => {
         .set('Authorization', `Bearer ${token}`)
         .expect(httpStatus.OK)
         .then(res => {
-          expect(res.body.username).to.equal('KK123');
-          expect(res.body.mobileNumber).to.equal(user.mobileNumber);
+          expect(res.body.email).to.equal(user.email);
           done();
         })
         .catch(done);

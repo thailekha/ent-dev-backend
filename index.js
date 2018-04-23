@@ -44,8 +44,6 @@ if (!module.parent) {
             .send(defaultUser)
             .expect(200)
             .then(res => {
-              expect(res.body.username).to.equal(defaultUser.username);
-              expect(res.body.mobileNumber).to.equal(defaultUser.mobileNumber);
               expect(res.body.email).to.equal('test@test.test');
               expect(res.body.password).to.equal('$2a$10$yD0cSQAJCCXdrZdzIaKOaOh2Xs113BUDHqQ8VHQ0jhGipgFgT4YOW');
               expect(res.body.portfolio.holdings.length).to.equal(5);

@@ -5,6 +5,10 @@ const chai = require('chai'); // eslint-disable-line import/newline-after-import
 const expect = chai.expect;
 const app = require('../../index');
 const defaultUser = require('./defaultUser.json');
+const jwt = require('jsonwebtoken');
+const config = require('../../config/config');
+
+const token = jwt.sign({}, config.jwtSecret);
 
 chai.config.includeStack = true;
 
@@ -76,6 +80,7 @@ describe('## User APIs', () => {
     it('should create a new user', done => {
       request(app)
         .post('/api/users')
+        .set('Authorization', `Bearer ${token}`)
         .send(user)
         .expect(httpStatus.OK)
         .then(res => {
@@ -118,6 +123,7 @@ describe('## User APIs', () => {
     it('should get user details', done => {
       request(app)
         .get(`/api/users/${user._id}`)
+        .set('Authorization', `Bearer ${token}`)
         .expect(httpStatus.OK)
         .then(res => {
           expect(res.body.username).to.equal(user.username);
@@ -155,6 +161,7 @@ describe('## User APIs', () => {
     it('should report error with message - Not found, when user does not exists', done => {
       request(app)
         .get('/api/users/56c787ccc67fc16ccc1a5e92')
+        .set('Authorization', `Bearer ${token}`)
         .expect(httpStatus.NOT_FOUND)
         .then(res => {
           expect(res.body.message).to.equal('Not Found');
@@ -168,6 +175,7 @@ describe('## User APIs', () => {
     it('should update user details', done => {
       request(app)
         .put(`/api/users/${user._id}`)
+        .set('Authorization', `Bearer ${token}`)
         .send(updatedUser)
         .expect(httpStatus.OK)
         .then(res => {
@@ -202,6 +210,7 @@ describe('## User APIs', () => {
     it('should update user details', done => {
       request(app)
         .put(`/api/users/reset/${user._id}`)
+        .set('Authorization', `Bearer ${token}`)
         .send(updatedUser)
         .expect(httpStatus.OK)
         .then(res => {
@@ -242,6 +251,7 @@ describe('## User APIs', () => {
     it('should get all users', done => {
       request(app)
         .get('/api/users')
+        .set('Authorization', `Bearer ${token}`)
         .expect(httpStatus.OK)
         .then(res => {
           expect(res.body).to.be.an('array');
@@ -253,6 +263,7 @@ describe('## User APIs', () => {
     it('should get all users (with limit and skip)', done => {
       request(app)
         .get('/api/users')
+        .set('Authorization', `Bearer ${token}`)
         .query({ limit: 10, skip: 1 })
         .expect(httpStatus.OK)
         .then(res => {
@@ -267,6 +278,7 @@ describe('## User APIs', () => {
     it('should delete user', done => {
       request(app)
         .delete(`/api/users/${user._id}`)
+        .set('Authorization', `Bearer ${token}`)
         .expect(httpStatus.OK)
         .then(res => {
           expect(res.body.username).to.equal('KK123');

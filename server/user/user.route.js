@@ -2,6 +2,8 @@ const express = require('express');
 const validate = require('express-validation');
 const paramValidation = require('../../config/param-validation');
 const userCtrl = require('./user.controller');
+const jwtAuthenticate = require('../middleware/index');
+const config = require('../../config/config');
 
 const router = express.Router(); // eslint-disable-line new-cap
 
@@ -11,6 +13,9 @@ router.route('/')
 
   /** POST /api/users - Create new user */
   .post(validate(paramValidation.createUser), userCtrl.create);
+
+
+router.use(jwtAuthenticate({ secret: config.jwtSecret }));
 
 router.route('/:userId')
   /** GET /api/users/:userId - Get user */

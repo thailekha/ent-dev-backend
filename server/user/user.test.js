@@ -5,10 +5,6 @@ const chai = require('chai'); // eslint-disable-line import/newline-after-import
 const expect = chai.expect;
 const app = require('../../index');
 const defaultUser = require('./defaultUser.json');
-const jwt = require('jsonwebtoken');
-const config = require('../../config/config');
-
-const token = jwt.sign({}, config.jwtSecret);
 
 chai.config.includeStack = true;
 
@@ -24,11 +20,15 @@ after(done => {
 });
 
 describe('## User APIs', () => {
-  let user = defaultUser;
+  const userToCreate = {
+    email: defaultUser.email,
+    password: defaultUser.password
+  };
+  let userId, token;
 
   var updatedUser = {
-    "email":"test@test.test",
-    "password":"$2a$10$yD0cSQAJCCXdrZdzIaKOaOh2Xs113BUDHqQ8VHQ0jhGipgFgT4YOW",
+    "email": "email should not change",
+    "password": "password should not change",
     "portfolio": {
       "holdings":[
         {
@@ -78,38 +78,14 @@ describe('## User APIs', () => {
     it('should create a new user', done => {
       request(app)
         .post('/api/users')
-        .set('Authorization', `Bearer ${token}`)
-        .send(user)
+        .send(userToCreate)
         .expect(httpStatus.OK)
         .then(res => {
-          expect(res.body.mobileNumber).to.equal(user.mobileNumber);
-          expect(res.body.email).to.equal('test@test.test');
-          expect(res.body.password).to.equal('$2a$10$yD0cSQAJCCXdrZdzIaKOaOh2Xs113BUDHqQ8VHQ0jhGipgFgT4YOW');
-          expect(res.body.portfolio.holdings.length).to.equal(5);
-          expect(res.body.portfolio.holdings[2].shares.length).to.equal(3);
-          expect(res.body.portfolio.holdings[2].shares[0].dateIn).to.equal("2014-01-01T00:00:00.000Z");
-          expect(res.body.portfolio.holdings[2].shares[0].dateOut).to.equal(null);
-          expect(res.body.portfolio.holdings[2].shares[0].quantity).to.equal(3000);
-          expect(res.body.portfolio.holdings[2].shares[0].purchasePrice).to.equal(20);
-          expect(res.body.portfolio.holdings[2].shares[0].sellingPrice).to.equal(null);
-          expect(res.body.portfolio.holdings[2].shares[0].sellingCosts).to.equal(null);
-          expect(res.body.portfolio.holdings[2].symbol).to.equal("CRH_I");
-          expect(res.body.portfolio.holdings[2].displayName).to.equal("CRH");
-          expect(res.body.portfolio.holdings[2].exchange).to.equal("ise");
+          expect(res.body.token).to.be.not.undefined;
+          expect(res.body._id).to.be.not.undefined;
 
-          expect(res.body.portfolio.stocksSold.length).to.equal(1);
-          expect(res.body.portfolio.stocksSold[0].shares.length).to.equal(1);
-          expect(res.body.portfolio.stocksSold[0].shares[0].dateIn).to.equal("2011-01-01T00:00:00.000Z");
-          expect(res.body.portfolio.stocksSold[0].shares[0].dateOut).to.equal("2017-01-01T00:00:00.000Z");
-          expect(res.body.portfolio.stocksSold[0].shares[0].quantity).to.equal(3000);
-          expect(res.body.portfolio.stocksSold[0].shares[0].purchasePrice).to.equal(20);
-          expect(res.body.portfolio.stocksSold[0].shares[0].sellingPrice).to.equal(30);
-          expect(res.body.portfolio.stocksSold[0].shares[0].sellingCosts).to.equal(576.25);
-          expect(res.body.portfolio.stocksSold[0].symbol).to.equal("CRH_I");
-          expect(res.body.portfolio.stocksSold[0].displayName).to.equal("CRH");
-          expect(res.body.portfolio.stocksSold[0].exchange).to.equal("ise");
-
-          user = res.body;
+          token = res.body.token;
+          userId = res.body._id;
           done();
         })
         .catch(done);
@@ -119,11 +95,10 @@ describe('## User APIs', () => {
   describe('# GET /api/users/:userId', () => {
     it('should get user details', done => {
       request(app)
-        .get(`/api/users/${user._id}`)
+        .get(`/api/users/${userId}`)
         .set('Authorization', `Bearer ${token}`)
         .expect(httpStatus.OK)
         .then(res => {
-          expect(res.body.mobileNumber).to.equal(user.mobileNumber);
           expect(res.body.email).to.equal('test@test.test');
           expect(res.body.password).to.equal('$2a$10$yD0cSQAJCCXdrZdzIaKOaOh2Xs113BUDHqQ8VHQ0jhGipgFgT4YOW');
           expect(res.body.portfolio.holdings.length).to.equal(5);
@@ -149,6 +124,7 @@ describe('## User APIs', () => {
           expect(res.body.portfolio.stocksSold[0].symbol).to.equal("CRH_I");
           expect(res.body.portfolio.stocksSold[0].displayName).to.equal("CRH");
           expect(res.body.portfolio.stocksSold[0].exchange).to.equal("ise");
+
           done();
         })
         .catch(done);
@@ -170,12 +146,11 @@ describe('## User APIs', () => {
   describe('# PUT /api/users/:userId', () => {
     it('should update user details', done => {
       request(app)
-        .put(`/api/users/${user._id}`)
+        .put(`/api/users/${userId}`)
         .set('Authorization', `Bearer ${token}`)
         .send(updatedUser)
         .expect(httpStatus.OK)
         .then(res => {
-          expect(res.body.mobileNumber).to.equal(user.mobileNumber);
           expect(res.body.email).to.equal('test@test.test');
           expect(res.body.password).to.equal('$2a$10$yD0cSQAJCCXdrZdzIaKOaOh2Xs113BUDHqQ8VHQ0jhGipgFgT4YOW');
           expect(res.body.portfolio.holdings.length).to.equal(1);
@@ -204,12 +179,11 @@ describe('## User APIs', () => {
   describe('# PUT /api/users/reset/:userId', () => {
     it('should update user details', done => {
       request(app)
-        .put(`/api/users/reset/${user._id}`)
+        .put(`/api/users/reset/${userId}`)
         .set('Authorization', `Bearer ${token}`)
         .send(updatedUser)
         .expect(httpStatus.OK)
         .then(res => {
-          expect(res.body.mobileNumber).to.equal(user.mobileNumber);
           expect(res.body.email).to.equal('test@test.test');
           expect(res.body.password).to.equal('$2a$10$yD0cSQAJCCXdrZdzIaKOaOh2Xs113BUDHqQ8VHQ0jhGipgFgT4YOW');
           expect(res.body.portfolio.holdings.length).to.equal(5);
@@ -271,11 +245,11 @@ describe('## User APIs', () => {
   describe('# DELETE /api/users/', () => {
     it('should delete user', done => {
       request(app)
-        .delete(`/api/users/${user._id}`)
+        .delete(`/api/users/${userId}`)
         .set('Authorization', `Bearer ${token}`)
         .expect(httpStatus.OK)
         .then(res => {
-          expect(res.body.email).to.equal(user.email);
+          expect(res.body.email).to.equal(defaultUser.email);
           done();
         })
         .catch(done);

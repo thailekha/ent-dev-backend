@@ -20,7 +20,7 @@ function login(req, res, next) {
 
     return res.json({
       token: jwt.sign({email: user.email}, config.jwtSecret),
-      userId: user._id
+      _id: user._id
     });
   });
 }

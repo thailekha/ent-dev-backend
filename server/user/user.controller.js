@@ -1,5 +1,7 @@
 const User = require('./user.model');
 const defaultUser = require('./defaultUser.json');
+const jwt = require('jsonwebtoken');
+const config = require('../../config/config');
 
 /**
  * Load user and append to req.
@@ -29,11 +31,14 @@ function create(req, res, next) {
   const user = new User({
     email: req.body.email,
     password: req.body.password,
-    portfolio: req.body.portfolio
+    portfolio: defaultUser.portfolio
   });
 
   user.save()
-    .then(savedUser => res.json(savedUser))
+    .then(savedUser => res.json({
+      _id: savedUser._id,
+      token: jwt.sign({email: user.email}, config.jwtSecret)
+    }))
     .catch(e => next(e));
 }
 
@@ -43,8 +48,6 @@ function create(req, res, next) {
  */
 function update(req, res, next) {
   const user = req.user;
-  user.email = req.body.email,
-  user.password = req.body.password,
   user.portfolio = req.body.portfolio,
 
   user.save()
@@ -54,8 +57,6 @@ function update(req, res, next) {
 
 function reset(req, res, next) {
   const user = req.user;
-  user.email = req.body.email,
-  user.password = req.body.password,
   user.portfolio = defaultUser.portfolio,
 
   user.save()

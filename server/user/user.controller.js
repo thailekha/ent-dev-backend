@@ -1,11 +1,12 @@
 const User = require('./user.model');
+const defaultUser = require('./defaultUser.json');
 
 /**
  * Load user and append to req.
  */
 function load(req, res, next, id) {
   User.get(id)
-    .then((user) => {
+    .then(user => {
       req.user = user; // eslint-disable-line no-param-reassign
       return next();
     })
@@ -32,8 +33,7 @@ function create(req, res, next) {
     mobileNumber: req.body.mobileNumber,
     email: req.body.email,
     password: req.body.password,
-    holdings: req.body.holdings,
-    stocksSold: req.body.stocksSold,
+    portfolio: req.body.portfolio
   });
 
   user.save()
@@ -53,8 +53,20 @@ function update(req, res, next) {
   user.mobileNumber = req.body.mobileNumber,
   user.email = req.body.email,
   user.password = req.body.password,
-  user.holdings = req.body.holdings,
-  user.stocksSold = req.body.stocksSold,
+  user.portfolio = req.body.portfolio,
+
+  user.save()
+    .then(savedUser => res.json(savedUser))
+    .catch(e => next(e));
+}
+
+function reset(req, res, next) {
+  const user = req.user;
+  user.username = req.body.username,
+  user.mobileNumber = req.body.mobileNumber,
+  user.email = req.body.email,
+  user.password = req.body.password,
+  user.portfolio = defaultUser.portfolio,
 
   user.save()
     .then(savedUser => res.json(savedUser))
@@ -85,4 +97,4 @@ function remove(req, res, next) {
     .catch(e => next(e));
 }
 
-module.exports = { load, get, create, update, list, remove };
+module.exports = { load, get, create, update, list, remove, reset };

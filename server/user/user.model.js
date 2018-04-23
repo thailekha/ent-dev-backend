@@ -41,6 +41,19 @@ const HoldingSchema = new mongoose.Schema({
   }
 });
 
+const PortfolioSchema = new mongoose.Schema({
+  holdings: {
+    type: [
+      HoldingSchema
+    ]
+  },
+  stocksSold: {
+    type: [
+      HoldingSchema
+    ]
+  }
+});
+
 /**
  * User Schema
  */
@@ -64,15 +77,8 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: 'String'
   },
-  holdings: {
-    type: [
-      HoldingSchema
-    ]
-  },
-  stocksSold: {
-    type: [
-      HoldingSchema
-    ]
+  portfolio: {
+    type: PortfolioSchema
   }
 });
 

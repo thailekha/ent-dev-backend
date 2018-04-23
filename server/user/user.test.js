@@ -4,6 +4,7 @@ const httpStatus = require('http-status');
 const chai = require('chai'); // eslint-disable-line import/newline-after-import
 const expect = chai.expect;
 const app = require('../../index');
+const defaultUser = require('./defaultUser.json');
 
 chai.config.includeStack = true;
 
@@ -19,249 +20,56 @@ after(done => {
 });
 
 describe('## User APIs', () => {
-  let user = {
-    username: 'KK123',
-    mobileNumber: '1234567890',
-    "email":"test@test.test",
-    "password":"$2a$10$yD0cSQAJCCXdrZdzIaKOaOh2Xs113BUDHqQ8VHQ0jhGipgFgT4YOW",
-    "holdings":[
-      {
-        "shares":[
-          {
-            "dateIn":"2018-01-01T00:00:00.000Z",
-            "dateOut":null,
-            "quantity":1000,
-            "purchasePrice":5,
-            "sellingPrice":null,
-            "sellingCosts":null
-          }
-        ],
-        "symbol":"AIBG_I",
-        "displayName":"AIB",
-        "exchange":"ise"
-      },
-      {
-        "shares":[
-          {
-            "dateIn":"2012-01-01T00:00:00.000Z",
-            "dateOut":null,
-            "quantity":1000,
-            "purchasePrice":4,
-            "sellingPrice":null,
-            "sellingCosts":null
-          },
-          {
-            "dateIn":"2013-01-01T00:00:00.000Z",
-            "dateOut":null,
-            "quantity":2000,
-            "purchasePrice":3.5,
-            "sellingPrice":null,
-            "sellingCosts":null
-          },
-          {
-            "dateIn":"2014-01-01T00:00:00.000Z",
-            "dateOut":null,
-            "quantity":3000,
-            "purchasePrice":3,
-            "sellingPrice":null,
-            "sellingCosts":null
-          },
-          {
-            "dateIn":"2015-01-01T00:00:00.000Z",
-            "dateOut":null,
-            "quantity":1000,
-            "purchasePrice":3.5,
-            "sellingPrice":null,
-            "sellingCosts":null
-          },
-          {
-            "dateIn":"2016-01-01T00:00:00.000Z",
-            "dateOut":null,
-            "quantity":2000,
-            "purchasePrice":3.5,
-            "sellingPrice":null,
-            "sellingCosts":null
-          },
-          {
-            "dateIn":"2017-01-01T00:00:00.000Z",
-            "dateOut":null,
-            "quantity":3000,
-            "purchasePrice":4,
-            "sellingPrice":null,
-            "sellingCosts":null
-          },
-          {
-            "dateIn":"2018-01-01T00:00:00.000Z",
-            "dateOut":null,
-            "quantity":4000,
-            "purchasePrice":5.5,
-            "sellingPrice":null,
-            "sellingCosts":null
-          }
-        ],
-        "symbol":"BIRG_I",
-        "displayName":"Bank of Ireland",
-        "exchange":"ise"
-      },
-      {
-        "shares":[
-          {
-            "dateIn":"2014-01-01T00:00:00.000Z",
-            "dateOut":null,
-            "quantity":3000,
-            "purchasePrice":20,
-            "sellingPrice":null,
-            "sellingCosts":null
-          },
-          {
-            "dateIn":"2015-01-01T00:00:00.000Z",
-            "dateOut":null,
-            "quantity":1000,
-            "purchasePrice":25,
-            "sellingPrice":null,
-            "sellingCosts":null
-          },
-          {
-            "dateIn":"2016-01-01T00:00:00.000Z",
-            "dateOut":null,
-            "quantity":2000,
-            "purchasePrice":30,
-            "sellingPrice":null,
-            "sellingCosts":null
-          }
-        ],
-        "symbol":"CRH_I",
-        "displayName":"CRH",
-        "exchange":"ise"
-      },
-      {
-        "shares":[
-          {
-            "dateIn":"2014-01-01T00:00:00.000Z",
-            "dateOut":null,
-            "quantity":4000,
-            "purchasePrice":3,
-            "sellingPrice":null,
-            "sellingCosts":null
-          },
-          {
-            "dateIn":"2015-01-01T00:00:00.000Z",
-            "dateOut":null,
-            "quantity":8000,
-            "purchasePrice":2.5,
-            "sellingPrice":null,
-            "sellingCosts":null
-          },
-          {
-            "dateIn":"2016-01-01T00:00:00.000Z",
-            "dateOut":null,
-            "quantity":2000,
-            "purchasePrice":4.5,
-            "sellingPrice":null,
-            "sellingCosts":null
-          }
-        ],
-        "symbol":"TSCO",
-        "displayName":"Tesco",
-        "exchange":"ftse"
-      },
-      {
-        "shares":[
-          {
-            "dateIn":"2016-01-01T00:00:00.000Z",
-            "dateOut":null,
-            "quantity":3000,
-            "purchasePrice":2,
-            "sellingPrice":null,
-            "sellingCosts":null
-          },
-          {
-            "dateIn":"2017-01-01T00:00:00.000Z",
-            "dateOut":null,
-            "quantity":1000,
-            "purchasePrice":2.5,
-            "sellingPrice":null,
-            "sellingCosts":null
-          },
-          {
-            "dateIn":"2018-01-01T00:00:00.000Z",
-            "dateOut":null,
-            "quantity":2000,
-            "purchasePrice":3,
-            "sellingPrice":null,
-            "sellingCosts":null
-          }
-        ],
-        "symbol":"ripple-xrp",
-        "displayName":"Ripple",
-        "exchange":"coinranking"
-      }
-    ],
-    "stocksSold":[
-      {
-        "shares":[
-          {
-            "dateIn":"2011-01-01T00:00:00.000Z",
-            "dateOut":"2017-01-01T00:00:00.000Z",
-            "quantity":3000,
-            "purchasePrice":20,
-            "sellingPrice":30,
-            "sellingCosts":576.25
-          }
-        ],
-        "symbol":"CRH_I",
-        "displayName":"CRH",
-        "exchange":"ise"
-      }
-    ]
-  };
+  let user = defaultUser;
 
   var updatedUser = {
     username: 'KK123',
     mobileNumber: '1234567890',
     "email":"test@test.test",
     "password":"$2a$10$yD0cSQAJCCXdrZdzIaKOaOh2Xs113BUDHqQ8VHQ0jhGipgFgT4YOW",
-    "holdings":[
-      {
-        "shares":[
-          {
-            "dateIn":"3000-01-01T00:00:00.000Z",
-            "dateOut":null,
-            "quantity":30000,
-            "purchasePrice":200,
-            "sellingPrice":null,
-            "sellingCosts":null
-          },
-          {
-            "dateIn":"2015-01-01T00:00:00.000Z",
-            "dateOut":null,
-            "quantity":1000,
-            "purchasePrice":25,
-            "sellingPrice":null,
-            "sellingCosts":null
-          },
-          {
-            "dateIn":"2016-01-01T00:00:00.000Z",
-            "dateOut":null,
-            "quantity":2000,
-            "purchasePrice":30,
-            "sellingPrice":null,
-            "sellingCosts":null
-          }
-        ],
-        "symbol":"fooCRH_I",
-        "displayName":"fooCRH",
-        "exchange":"fooise"
-      }
-    ],
-    "stocksSold":[
-      {
-        "shares":[],
-        "symbol":"foosymbol",
-        "displayName":"foodisplayName",
-        "exchange":"fooexchange"
-      }
-    ]
+    "portfolio": {
+      "holdings":[
+        {
+          "shares":[
+            {
+              "dateIn":"3000-01-01T00:00:00.000Z",
+              "dateOut":null,
+              "quantity":30000,
+              "purchasePrice":200,
+              "sellingPrice":null,
+              "sellingCosts":null
+            },
+            {
+              "dateIn":"2015-01-01T00:00:00.000Z",
+              "dateOut":null,
+              "quantity":1000,
+              "purchasePrice":25,
+              "sellingPrice":null,
+              "sellingCosts":null
+            },
+            {
+              "dateIn":"2016-01-01T00:00:00.000Z",
+              "dateOut":null,
+              "quantity":2000,
+              "purchasePrice":30,
+              "sellingPrice":null,
+              "sellingCosts":null
+            }
+          ],
+          "symbol":"fooCRH_I",
+          "displayName":"fooCRH",
+          "exchange":"fooise"
+        }
+      ],
+      "stocksSold":[
+        {
+          "shares":[],
+          "symbol":"foosymbol",
+          "displayName":"foodisplayName",
+          "exchange":"fooexchange"
+        }
+      ]
+    }
   };
 
   describe('# POST /api/users', () => {
@@ -273,6 +81,32 @@ describe('## User APIs', () => {
         .then(res => {
           expect(res.body.username).to.equal(user.username);
           expect(res.body.mobileNumber).to.equal(user.mobileNumber);
+          expect(res.body.email).to.equal('test@test.test');
+          expect(res.body.password).to.equal('$2a$10$yD0cSQAJCCXdrZdzIaKOaOh2Xs113BUDHqQ8VHQ0jhGipgFgT4YOW');
+          expect(res.body.portfolio.holdings.length).to.equal(5);
+          expect(res.body.portfolio.holdings[2].shares.length).to.equal(3);
+          expect(res.body.portfolio.holdings[2].shares[0].dateIn).to.equal("2014-01-01T00:00:00.000Z");
+          expect(res.body.portfolio.holdings[2].shares[0].dateOut).to.equal(null);
+          expect(res.body.portfolio.holdings[2].shares[0].quantity).to.equal(3000);
+          expect(res.body.portfolio.holdings[2].shares[0].purchasePrice).to.equal(20);
+          expect(res.body.portfolio.holdings[2].shares[0].sellingPrice).to.equal(null);
+          expect(res.body.portfolio.holdings[2].shares[0].sellingCosts).to.equal(null);
+          expect(res.body.portfolio.holdings[2].symbol).to.equal("CRH_I");
+          expect(res.body.portfolio.holdings[2].displayName).to.equal("CRH");
+          expect(res.body.portfolio.holdings[2].exchange).to.equal("ise");
+
+          expect(res.body.portfolio.stocksSold.length).to.equal(1);
+          expect(res.body.portfolio.stocksSold[0].shares.length).to.equal(1);
+          expect(res.body.portfolio.stocksSold[0].shares[0].dateIn).to.equal("2011-01-01T00:00:00.000Z");
+          expect(res.body.portfolio.stocksSold[0].shares[0].dateOut).to.equal("2017-01-01T00:00:00.000Z");
+          expect(res.body.portfolio.stocksSold[0].shares[0].quantity).to.equal(3000);
+          expect(res.body.portfolio.stocksSold[0].shares[0].purchasePrice).to.equal(20);
+          expect(res.body.portfolio.stocksSold[0].shares[0].sellingPrice).to.equal(30);
+          expect(res.body.portfolio.stocksSold[0].shares[0].sellingCosts).to.equal(576.25);
+          expect(res.body.portfolio.stocksSold[0].symbol).to.equal("CRH_I");
+          expect(res.body.portfolio.stocksSold[0].displayName).to.equal("CRH");
+          expect(res.body.portfolio.stocksSold[0].exchange).to.equal("ise");
+
           user = res.body;
           done();
         })
@@ -290,29 +124,29 @@ describe('## User APIs', () => {
           expect(res.body.mobileNumber).to.equal(user.mobileNumber);
           expect(res.body.email).to.equal('test@test.test');
           expect(res.body.password).to.equal('$2a$10$yD0cSQAJCCXdrZdzIaKOaOh2Xs113BUDHqQ8VHQ0jhGipgFgT4YOW');
-          expect(res.body.holdings.length).to.equal(5);
-          expect(res.body.holdings[2].shares.length).to.equal(3);
-          expect(res.body.holdings[2].shares[0].dateIn).to.equal("2014-01-01T00:00:00.000Z");
-          expect(res.body.holdings[2].shares[0].dateOut).to.equal(null);
-          expect(res.body.holdings[2].shares[0].quantity).to.equal(3000);
-          expect(res.body.holdings[2].shares[0].purchasePrice).to.equal(20);
-          expect(res.body.holdings[2].shares[0].sellingPrice).to.equal(null);
-          expect(res.body.holdings[2].shares[0].sellingCosts).to.equal(null);
-          expect(res.body.holdings[2].symbol).to.equal("CRH_I");
-          expect(res.body.holdings[2].displayName).to.equal("CRH");
-          expect(res.body.holdings[2].exchange).to.equal("ise");
+          expect(res.body.portfolio.holdings.length).to.equal(5);
+          expect(res.body.portfolio.holdings[2].shares.length).to.equal(3);
+          expect(res.body.portfolio.holdings[2].shares[0].dateIn).to.equal("2014-01-01T00:00:00.000Z");
+          expect(res.body.portfolio.holdings[2].shares[0].dateOut).to.equal(null);
+          expect(res.body.portfolio.holdings[2].shares[0].quantity).to.equal(3000);
+          expect(res.body.portfolio.holdings[2].shares[0].purchasePrice).to.equal(20);
+          expect(res.body.portfolio.holdings[2].shares[0].sellingPrice).to.equal(null);
+          expect(res.body.portfolio.holdings[2].shares[0].sellingCosts).to.equal(null);
+          expect(res.body.portfolio.holdings[2].symbol).to.equal("CRH_I");
+          expect(res.body.portfolio.holdings[2].displayName).to.equal("CRH");
+          expect(res.body.portfolio.holdings[2].exchange).to.equal("ise");
 
-          expect(res.body.stocksSold.length).to.equal(1);
-          expect(res.body.stocksSold[0].shares.length).to.equal(1);
-          expect(res.body.stocksSold[0].shares[0].dateIn).to.equal("2011-01-01T00:00:00.000Z");
-          expect(res.body.stocksSold[0].shares[0].dateOut).to.equal("2017-01-01T00:00:00.000Z");
-          expect(res.body.stocksSold[0].shares[0].quantity).to.equal(3000);
-          expect(res.body.stocksSold[0].shares[0].purchasePrice).to.equal(20);
-          expect(res.body.stocksSold[0].shares[0].sellingPrice).to.equal(30);
-          expect(res.body.stocksSold[0].shares[0].sellingCosts).to.equal(576.25);
-          expect(res.body.stocksSold[0].symbol).to.equal("CRH_I");
-          expect(res.body.stocksSold[0].displayName).to.equal("CRH");
-          expect(res.body.stocksSold[0].exchange).to.equal("ise");
+          expect(res.body.portfolio.stocksSold.length).to.equal(1);
+          expect(res.body.portfolio.stocksSold[0].shares.length).to.equal(1);
+          expect(res.body.portfolio.stocksSold[0].shares[0].dateIn).to.equal("2011-01-01T00:00:00.000Z");
+          expect(res.body.portfolio.stocksSold[0].shares[0].dateOut).to.equal("2017-01-01T00:00:00.000Z");
+          expect(res.body.portfolio.stocksSold[0].shares[0].quantity).to.equal(3000);
+          expect(res.body.portfolio.stocksSold[0].shares[0].purchasePrice).to.equal(20);
+          expect(res.body.portfolio.stocksSold[0].shares[0].sellingPrice).to.equal(30);
+          expect(res.body.portfolio.stocksSold[0].shares[0].sellingCosts).to.equal(576.25);
+          expect(res.body.portfolio.stocksSold[0].symbol).to.equal("CRH_I");
+          expect(res.body.portfolio.stocksSold[0].displayName).to.equal("CRH");
+          expect(res.body.portfolio.stocksSold[0].exchange).to.equal("ise");
           done();
         })
         .catch(done);
@@ -341,23 +175,63 @@ describe('## User APIs', () => {
           expect(res.body.mobileNumber).to.equal(updatedUser.mobileNumber);
           expect(res.body.email).to.equal('test@test.test');
           expect(res.body.password).to.equal('$2a$10$yD0cSQAJCCXdrZdzIaKOaOh2Xs113BUDHqQ8VHQ0jhGipgFgT4YOW');
-          expect(res.body.holdings.length).to.equal(1);
-          expect(res.body.holdings[0].shares.length).to.equal(3);
-          expect(res.body.holdings[0].shares[0].dateIn).to.equal("3000-01-01T00:00:00.000Z");
-          expect(res.body.holdings[0].shares[0].dateOut).to.equal(null);
-          expect(res.body.holdings[0].shares[0].quantity).to.equal(30000);
-          expect(res.body.holdings[0].shares[0].purchasePrice).to.equal(200);
-          expect(res.body.holdings[0].shares[0].sellingPrice).to.equal(null);
-          expect(res.body.holdings[0].shares[0].sellingCosts).to.equal(null);
-          expect(res.body.holdings[0].symbol).to.equal("fooCRH_I");
-          expect(res.body.holdings[0].displayName).to.equal("fooCRH");
-          expect(res.body.holdings[0].exchange).to.equal("fooise");
+          expect(res.body.portfolio.holdings.length).to.equal(1);
+          expect(res.body.portfolio.holdings[0].shares.length).to.equal(3);
+          expect(res.body.portfolio.holdings[0].shares[0].dateIn).to.equal("3000-01-01T00:00:00.000Z");
+          expect(res.body.portfolio.holdings[0].shares[0].dateOut).to.equal(null);
+          expect(res.body.portfolio.holdings[0].shares[0].quantity).to.equal(30000);
+          expect(res.body.portfolio.holdings[0].shares[0].purchasePrice).to.equal(200);
+          expect(res.body.portfolio.holdings[0].shares[0].sellingPrice).to.equal(null);
+          expect(res.body.portfolio.holdings[0].shares[0].sellingCosts).to.equal(null);
+          expect(res.body.portfolio.holdings[0].symbol).to.equal("fooCRH_I");
+          expect(res.body.portfolio.holdings[0].displayName).to.equal("fooCRH");
+          expect(res.body.portfolio.holdings[0].exchange).to.equal("fooise");
 
-          expect(res.body.stocksSold.length).to.equal(1);
-          expect(res.body.stocksSold[0].shares.length).to.equal(0);
-          expect(res.body.stocksSold[0].symbol).to.equal("foosymbol");
-          expect(res.body.stocksSold[0].displayName).to.equal("foodisplayName");
-          expect(res.body.stocksSold[0].exchange).to.equal("fooexchange");
+          expect(res.body.portfolio.stocksSold.length).to.equal(1);
+          expect(res.body.portfolio.stocksSold[0].shares.length).to.equal(0);
+          expect(res.body.portfolio.stocksSold[0].symbol).to.equal("foosymbol");
+          expect(res.body.portfolio.stocksSold[0].displayName).to.equal("foodisplayName");
+          expect(res.body.portfolio.stocksSold[0].exchange).to.equal("fooexchange");
+          done();
+        })
+        .catch(done);
+    });
+  });
+
+  describe('# PUT /api/users/reset/:userId', () => {
+    it('should update user details', done => {
+      request(app)
+        .put(`/api/users/reset/${user._id}`)
+        .send(updatedUser)
+        .expect(httpStatus.OK)
+        .then(res => {
+          expect(res.body.username).to.equal(updatedUser.username);
+          expect(res.body.mobileNumber).to.equal(updatedUser.mobileNumber);
+          expect(res.body.email).to.equal('test@test.test');
+          expect(res.body.password).to.equal('$2a$10$yD0cSQAJCCXdrZdzIaKOaOh2Xs113BUDHqQ8VHQ0jhGipgFgT4YOW');
+          expect(res.body.portfolio.holdings.length).to.equal(5);
+          expect(res.body.portfolio.holdings[2].shares.length).to.equal(3);
+          expect(res.body.portfolio.holdings[2].shares[0].dateIn).to.equal("2014-01-01T00:00:00.000Z");
+          expect(res.body.portfolio.holdings[2].shares[0].dateOut).to.equal(null);
+          expect(res.body.portfolio.holdings[2].shares[0].quantity).to.equal(3000);
+          expect(res.body.portfolio.holdings[2].shares[0].purchasePrice).to.equal(20);
+          expect(res.body.portfolio.holdings[2].shares[0].sellingPrice).to.equal(null);
+          expect(res.body.portfolio.holdings[2].shares[0].sellingCosts).to.equal(null);
+          expect(res.body.portfolio.holdings[2].symbol).to.equal("CRH_I");
+          expect(res.body.portfolio.holdings[2].displayName).to.equal("CRH");
+          expect(res.body.portfolio.holdings[2].exchange).to.equal("ise");
+
+          expect(res.body.portfolio.stocksSold.length).to.equal(1);
+          expect(res.body.portfolio.stocksSold[0].shares.length).to.equal(1);
+          expect(res.body.portfolio.stocksSold[0].shares[0].dateIn).to.equal("2011-01-01T00:00:00.000Z");
+          expect(res.body.portfolio.stocksSold[0].shares[0].dateOut).to.equal("2017-01-01T00:00:00.000Z");
+          expect(res.body.portfolio.stocksSold[0].shares[0].quantity).to.equal(3000);
+          expect(res.body.portfolio.stocksSold[0].shares[0].purchasePrice).to.equal(20);
+          expect(res.body.portfolio.stocksSold[0].shares[0].sellingPrice).to.equal(30);
+          expect(res.body.portfolio.stocksSold[0].shares[0].sellingCosts).to.equal(576.25);
+          expect(res.body.portfolio.stocksSold[0].symbol).to.equal("CRH_I");
+          expect(res.body.portfolio.stocksSold[0].displayName).to.equal("CRH");
+          expect(res.body.portfolio.stocksSold[0].exchange).to.equal("ise");
           done();
         })
         .catch(done);

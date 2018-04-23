@@ -42,6 +42,8 @@ Vagrant.configure("2") do |config|
       chmod +x /usr/bin/docker-compose
       docker-compose --version
       docker pull mongo
+
+      apt-get install mongodb-clients
     SHELL
   end
 
@@ -54,6 +56,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "devbox" do |devbox|
+    forward_port[4040]
     common_config[devbox]
     fix_tty[devbox]
     install_docker[devbox]

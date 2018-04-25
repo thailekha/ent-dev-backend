@@ -28,7 +28,7 @@ router.route('/:userId')
   .delete(userCtrl.remove);
 
 router.route('/reset/:userId')
-  .put(validate(paramValidation.updateUser), userCtrl.reset);
+  .put(validate(paramValidation.resetUser), userCtrl.reset);
 
 /** Load user when API with userId route parameter is hit */
 router.param('userId', userCtrl.load);

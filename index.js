@@ -5,6 +5,7 @@ const config = require('./config/config');
 const app = require('./config/express');
 const debug = require('debug')('express-mongoose-es6-rest-api:index');
 mongoose.Promise = require('bluebird');
+const seedDb = require('./seedDb');
 
 // connect to mongo db
 const mongoUri = config.mongo.host;
@@ -24,7 +25,12 @@ if (config.mongooseDebug) {
 if (!module.parent) {
   // listen on port config.port
   app.listen(config.port, () => {
-    console.info(`server started on port ${config.port} (${config.env})`); // eslint-disable-line no-console
+    seedDb(app, err => {
+      if (err) {
+        console.log('ERROR seeding DB', err);
+      }
+      console.info(`server started on port ${config.port} (${config.env})`); // eslint-disable-line no-console
+    });
   });
 }
 

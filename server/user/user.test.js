@@ -100,7 +100,7 @@ describe('## User APIs', () => {
         .expect(httpStatus.OK)
         .then(res => {
           expect(res.body.email).to.equal('test@test.test');
-          expect(res.body.password).to.equal('$2a$10$yD0cSQAJCCXdrZdzIaKOaOh2Xs113BUDHqQ8VHQ0jhGipgFgT4YOW');
+          expect(res.body.password).to.equal('asdasd');
           expect(res.body.portfolio.holdings.length).to.equal(5);
           expect(res.body.portfolio.holdings[2].shares.length).to.equal(3);
           expect(res.body.portfolio.holdings[2].shares[0].dateIn).to.equal("2014-01-01T00:00:00.000Z");
@@ -152,7 +152,7 @@ describe('## User APIs', () => {
         .expect(httpStatus.OK)
         .then(res => {
           expect(res.body.email).to.equal('test@test.test');
-          expect(res.body.password).to.equal('$2a$10$yD0cSQAJCCXdrZdzIaKOaOh2Xs113BUDHqQ8VHQ0jhGipgFgT4YOW');
+          expect(res.body.password).to.equal('asdasd');
           expect(res.body.portfolio.holdings.length).to.equal(1);
           expect(res.body.portfolio.holdings[0].shares.length).to.equal(3);
           expect(res.body.portfolio.holdings[0].shares[0].dateIn).to.equal("3000-01-01T00:00:00.000Z");
@@ -185,7 +185,7 @@ describe('## User APIs', () => {
         .expect(httpStatus.OK)
         .then(res => {
           expect(res.body.email).to.equal('test@test.test');
-          expect(res.body.password).to.equal('$2a$10$yD0cSQAJCCXdrZdzIaKOaOh2Xs113BUDHqQ8VHQ0jhGipgFgT4YOW');
+          expect(res.body.password).to.equal('asdasd');
           expect(res.body.portfolio.holdings.length).to.equal(5);
           expect(res.body.portfolio.holdings[2].shares.length).to.equal(3);
           expect(res.body.portfolio.holdings[2].shares[0].dateIn).to.equal("2014-01-01T00:00:00.000Z");

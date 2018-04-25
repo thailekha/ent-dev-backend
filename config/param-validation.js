@@ -21,6 +21,15 @@ module.exports = {
     }
   },
 
+  resetUser: {
+    body: {
+      portfolio: Joi.object().required()
+    },
+    params: {
+      userId: Joi.string().hex().required()
+    }
+  },
+
   // POST /api/auth/login
   login: {
     body: {
